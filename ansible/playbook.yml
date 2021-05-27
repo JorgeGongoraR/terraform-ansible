@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Installing packages
+      apt:
+        name: '{{ item }}'
+        state: latest
+      loop:
+        - curl
+        - net-tools
+        - zip
+        - unzip
+      when: ansible_facts['os_family'] == "Debian"
+    - name: Downloading consul
