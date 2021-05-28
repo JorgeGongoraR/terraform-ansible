@@ -97,6 +97,9 @@
       copy:
         src: ../configuration/server.hcl
         dest: /etc/consul.d/server.hcl
+    - name: Join with other nodes
+      ansible.builtin.shell:
+        cmd: systemctl daemon-reload
     - name: Start Consul service
       systemd:
         name: consul.service
@@ -117,6 +120,9 @@
       copy:
         src: ../configuration/server.hcl
         dest: /etc/consul.d/server.hcl
+    - name: Join with other nodes
+      ansible.builtin.shell:
+        cmd: systemctl daemon-reload
     - name: Start Consul service
       systemd:
         name: consul.service
@@ -137,6 +143,9 @@
       copy:
         src: ../configuration/server.hcl
         dest: /etc/consul.d/server.hcl
+    - name: Join with other nodes
+      ansible.builtin.shell:
+        cmd: systemctl daemon-reload
     - name: Start Consul service
       systemd:
         name: consul.service
@@ -153,6 +162,9 @@
       copy:
         src: ../configuration/consul4.hcl
         dest: /etc/consul.d/consul.hcl
+    - name: Join with other nodes
+      ansible.builtin.shell:
+        cmd: systemctl daemon-reload
     - name: Start Consul service
       systemd:
         name: consul.service
