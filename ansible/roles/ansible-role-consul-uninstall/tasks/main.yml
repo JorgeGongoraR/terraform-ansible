@@ -1,0 +1,36 @@
+---
+  - name: Collecting services status
+    service_facts:
+    register: services_state
+
+  - name: Stopping the service
+    ansible.builtin.systemd:
+      name: "{{ service_name }}"
+      state: stopped
+    when: service_name in services
+  
+  - name: Delete directory
+    file:
+      state: absent
+      path: "{{ item }}"
+    loop:
+      - "{{ consul_download_path }}"
+      - "{{ consul_path }}"
+      - "{{ consul_bin }}"
+      - "{{ service_path }}"
+      - "{{ consul_integrated_path }}"
+  
+  - name: Reload systemd
+    ansible.builtin.systemd:
+      daemon_reload: yes
+
+  - name: Delete user consul
+    ansible.builtin.user:
+      name: consul
+      group: consul
+      state: absent
+
+  - name: Delete group consul
+    ansible.builtin.group:
+      name: consul
+      state: absent

@@ -1,0 +1,7 @@
+consul_download_path: "/usr/local/bin/consul"
+consul_path: "/etc/consul.d"
+consul_bin: "/usr/local/bin/consul"
+consul_integrated_path: "/opt/consul/"
+consul_config: "/etc/consul.d/consul.hcl"
+service_name: "consul.service"
+service_path: "/etc/systemd/system/{{ service_name }}"
