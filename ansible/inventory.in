@@ -1,0 +1,17 @@
+[all]
+54.67.74.184 ansible_connection=ssh ansible_user=ubuntu
+13.57.245.149 ansible_connection=ssh ansible_user=ubuntu
+52.53.169.118 ansible_connection=ssh ansible_user=ubuntu
+54.153.2.254 ansible_connection=ssh ansible_user=ubuntu
+
+[consul1]
+54.67.74.184
+
+[consul2]
+13.57.245.149
+
+[consul3]
+52.53.169.118
+
+[consul4]
+54.153.2.254

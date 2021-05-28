@@ -1,8 +1,16 @@
 ---
-- hosts: all
+- name: Installing consul
+  hosts: all
   become: yes
   become_user: root
+  gather_facts: yes
+  tags: [consul]
   tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 8640
     - name: Installing packages
       apt:
         name: '{{ item }}'
@@ -14,3 +22,138 @@
         - unzip
       when: ansible_facts['os_family'] == "Debian"
     - name: Downloading consul
+      ansible.builtin.unarchive:
+        src: https://releases.hashicorp.com/consul/1.9.5/consul_1.9.5_linux_amd64.zip
+        dest: /usr/local/bin/
+        remote_src: yes
+    - name: Checking consul version
+      ansible.builtin.shell: consul --version
+    - name: Installing the consul CLI
+      ansible.builtin.shell: consul -autocomplete-install complete -C /usr/bin/consul consul
+
+- name: Configure files in all nodes
+  hosts: all
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [files]
+  tasks:
+    - name: Giving root permissions to the consul binary
+      file:
+        path: /usr/local/bin/consul
+        owner: root
+        group: root
+        mode: 0755
+    - name: Creating consul group
+      ansible.builtin.group:
+        name: consul
+        state: present
+    - name: Creating consul user and adding to the consul group
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        state: present
+        groups: "{{ item.groups }}"
+        shell: /bin/false
+        home: /etc/consul.d
+      loop:
+        - { name: 'consul', groups: 'consul'}
+      when: ansible_os_family == "Debian"
+    - name: Creating empty file into /etc/consul.d
+      file:
+        path: "/etc/consul.d/consul.hcl"
+        state: touch
+        owner: consul
+        group: consul
+        mode: '0644'
+    - name: Changing permissions to /etc/consul.d/ folder
+      file:
+        path: /etc/consul.d
+        owner: consul
+        group: consul
+    - name: Creating the consul data directory
+      ansible.builtin.file:
+        path: /opt/consul
+        state: directory
+        recurse: yes
+        owner: consul
+        group: consul
+    - name: Systemd service
+      copy:
+        src: ../configuration/consul.service
+        dest: /etc/systemd/system/consul.service
+
+- name: Configure consul host1
+  hosts: consul1
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [consul1]
+  tasks:
+    - name: Copy consul.hcl
+      copy:
+        src: ../configuration/consul1.hcl
+        dest: /etc/consul.d/consul.hcl
+    - name: Copy server.hcl
+      copy:
+        src: ../configuration/server.hcl
+        dest: /etc/consul.d/server.hcl
+    - name: Start Consul service
+      systemd:
+        name: consul.service
+        state: started
+
+- name: Configure consul host2
+  hosts: consul2
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [consul2]
+  tasks:
+    - name: Copy consul2.hcl
+      copy:
+        src: ../configuration/consul2.hcl
+        dest: /etc/consul.d/consul.hcl
+    - name: Copy server.hcl
+      copy:
+        src: ../configuration/server.hcl
+        dest: /etc/consul.d/server.hcl
+    - name: Start Consul service
+      systemd:
+        name: consul.service
+        state: started
+
+- name: Configure consul host3
+  hosts: consul3
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [consul3]
+  tasks:
+    - name: Copy consul3.hcl
+      copy:
+        src: ../configuration/consul3.hcl
+        dest: /etc/consul.d/consul.hcl
+    - name: Copy server.hcl
+      copy:
+        src: ../configuration/server.hcl
+        dest: /etc/consul.d/server.hcl
+    - name: Start Consul service
+      systemd:
+        name: consul.service
+        state: started
+
+- name: Configure consul host4
+  hosts: consul4
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [consul4]
+  tasks:
+    - name: Copy consul4.hcl
+      copy:
+        src: ../configuration/consul4.hcl
+        dest: /etc/consul.d/consul.hcl
+    - name: Start Consul service
+      systemd:
+        name: consul.service
+        state: started
