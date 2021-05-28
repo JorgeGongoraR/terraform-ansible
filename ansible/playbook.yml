@@ -1,4 +1,15 @@
 ---
+- name: Uninstall consul
+  hosts: all
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [clean]
+
+  roles:
+    - name: Uninstall Consul
+      role: ansible-role-consul-uninstall
+
 - name: Installing consul
   hosts: all
   become: yes
@@ -28,8 +39,6 @@
         remote_src: yes
     - name: Checking consul version
       ansible.builtin.shell: consul --version
-    - name: Installing the consul CLI
-      ansible.builtin.shell: consul -autocomplete-install complete -C /usr/bin/consul consul
 
 - name: Configure files in all nodes
   hosts: all
