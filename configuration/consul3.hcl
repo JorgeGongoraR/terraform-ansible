@@ -12,4 +12,4 @@ performance = {
   raft_multiplier = 1
 }
 
-encrypt = "0baD7lJ/a5Mcz2p+jWmjHxeE4xNzeY9AIkHQzDY0oxE="
+encrypt = "loiCdAX7+rCe3pjBmo4gXZA5bBx1ADfwa26YUn8hgkY="
