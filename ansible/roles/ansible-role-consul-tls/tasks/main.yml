@@ -1,0 +1,21 @@
+---
+  - name: Getting private CA
+    ansible.builtin.shell: "consul tls ca create"
+  - name: Creating {{ consul_tls }} folder
+    ansible.builtin.file:
+        path: "{{ consul_tls }}"
+        state: directory
+        recurse: yes
+  - name: Generate SSH key
+    openssh_keypair:
+        path: "~/.ssh/id_rsa"
+        type: rsa
+        size: 4096
+        state: present
+        force: no
+  - name: copy ssh key to the remain servers
+    ansible.builtin.shell: sudo ssh-copy-id -i ~/.ssh/id_rsa.pub {{ ansible_user }}@172.31.11.24
+  # - name: Copy the .pem file to the remaining servers
+  #   ansible.builtin.shell:
+  #     "sudo scp -o StrictHostKeyChecking=no consul-agent-ca.pem {{ ansible_user }}@172.31.14.21:~/."
+

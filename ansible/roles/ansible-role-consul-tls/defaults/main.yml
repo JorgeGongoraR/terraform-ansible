@@ -1,0 +1,2 @@
+consul_tls: "/etc/consul.d/tls"
+ansible_user: "ubuntu"
