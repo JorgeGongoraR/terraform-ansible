@@ -1,17 +1,21 @@
 [all]
-54.67.74.184 ansible_connection=ssh ansible_user=ubuntu
-13.57.245.149 ansible_connection=ssh ansible_user=ubuntu
-52.53.169.118 ansible_connection=ssh ansible_user=ubuntu
-54.153.2.254 ansible_connection=ssh ansible_user=ubuntu
+13.56.237.61
+18.144.71.165
+54.193.33.66
+50.18.91.142
 
 [consul1]
-54.67.74.184
+13.56.237.61
 
 [consul2]
-13.57.245.149
+18.144.71.165
 
 [consul3]
-52.53.169.118
+54.193.33.66
 
 [consul4]
-54.153.2.254
+50.18.91.142
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=ubuntu
