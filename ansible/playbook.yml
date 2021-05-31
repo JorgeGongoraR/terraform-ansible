@@ -76,7 +76,7 @@
         mode: '0644'
     - name: Changing permissions to /etc/consul.d/ folder
       file:
-        path: /etc/consul.d
+        path: /etc/consul.d/
         owner: consul
         group: consul
     - name: Creating the consul data directory
@@ -178,3 +178,14 @@
       systemd:
         name: consul.service
         state: started
+
+- name: TLS
+  hosts: consul1
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tags: [getca]
+
+  roles:
+    - name: Get CA
+      role: ansible-role-consul-tls
