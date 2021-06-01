@@ -1,0 +1,88 @@
+---
+  - name: Copy consul1.hcl
+    copy:
+      src: ../configuration/consul1.hcl
+      dest: /etc/consul.d/consul.hcl
+  - name: Copy server.hcl
+    copy:
+      src: ../configuration/server.hcl
+      dest: /etc/consul.d/server.hcl
+
+  - name: Just force systemd to reread configs
+    ansible.builtin.systemd:
+      daemon_reload: yes
+ 
+  - name: Make sure a service consul is enabled
+    ansible.builtin.systemd:
+      name: consul
+      enabled: yes
+
+  - name: Make sure a service consul is running
+    ansible.builtin.systemd:
+      state: started
+      name: consul
+
+  - name: Copy consul2.hcl
+    copy:
+      src: ../configuration/consul2.hcl
+      dest: /etc/consul.d/consul.hcl
+  - name: Copy server.hcl
+    copy:
+      src: ../configuration/server.hcl
+      dest: /etc/consul.d/server.hcl
+
+  - name: Just force systemd to reread configs
+    ansible.builtin.systemd:
+      daemon_reload: yes
+ 
+  - name: Make sure a service consul is enabled
+    ansible.builtin.systemd:
+      name: consul
+      enabled: yes
+
+  - name: Make sure a service consul is running
+    ansible.builtin.systemd:
+      state: started
+      name: consul
+
+  - name: Copy consul3.hcl
+    copy:
+      src: ../configuration/consul3.hcl
+      dest: /etc/consul.d/consul.hcl
+  - name: Copy server.hcl
+    copy:
+      src: ../configuration/server.hcl
+      dest: /etc/consul.d/server.hcl
+
+  - name: Just force systemd to reread configs
+    ansible.builtin.systemd:
+      daemon_reload: yes
+ 
+  - name: Make sure a service consul is enabled
+    ansible.builtin.systemd:
+      name: consul
+      enabled: yes
+
+  - name: Make sure a service consul is running
+    ansible.builtin.systemd:
+      state: started
+      name: consul
+
+  - name: Copy consul4.hcl
+    copy:
+      src: ../configuration/consul4.hcl
+      dest: /etc/consul.d/consul.hcl
+  
+  - name: Just force systemd to reread configs
+    ansible.builtin.systemd:
+      daemon_reload: yes
+ 
+  - name: Make sure a service consul is enabled
+    ansible.builtin.systemd:
+      name: consul
+      enabled: yes
+
+  - name: Make sure a service consul is running
+    ansible.builtin.systemd:
+      state: started
+      name: consul
