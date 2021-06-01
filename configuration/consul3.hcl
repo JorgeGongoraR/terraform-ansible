@@ -1,15 +1,15 @@
 datacenter = "dc1"
 data_dir = "/opt/consul"
 log_level = "INFO"
-bind_addr = "172.31.8.141"
+bind_addr = "54.219.199.21"
 client_addr = "0.0.0.0"
 retry_join = [
-  "172.31.14.21:8301",
-  "172.31.11.24:8301",
-  "172.31.8.141:8301"
+  "13.52.78.71:8301",
+  "54.219.138.138:8301",
+  "54.219.199.21:8301"
 ]
 performance = {
   raft_multiplier = 1
 }
 
-encrypt = "loiCdAX7+rCe3pjBmo4gXZA5bBx1ADfwa26YUn8hgkY="
+encrypt = "W8V6ZdAhUjZLVSZunrgwIK7S3S94kRppuJT0dM7FDN4="
