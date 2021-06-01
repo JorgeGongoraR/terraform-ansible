@@ -19,6 +19,11 @@
       - "{{ consul_bin }}"
       - "{{ service_path }}"
       - "{{ consul_integrated_path }}"
+
+  - name: Delete zip
+    file:
+      state: absent
+      path: "~/*.zip"
   
   - name: Reload systemd
     ansible.builtin.systemd:
