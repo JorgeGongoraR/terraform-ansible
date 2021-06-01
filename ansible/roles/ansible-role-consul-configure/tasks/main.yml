@@ -1,0 +1,50 @@
+---
+  - name: Giving root permissions to the consul binary
+    file:
+      path: /usr/local/bin/consul
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: Creating consul group
+    ansible.builtin.group:
+      name: consul
+      state: present
+
+  - name: Creating consul user and adding to the consul group
+    ansible.builtin.user:
+      name: "{{ item.name }}"
+      state: present
+      groups: "{{ item.groups }}"
+      shell: /bin/false
+      home: /etc/consul.d
+    loop:
+      - { name: 'consul', groups: 'consul'}
+    when: ansible_os_family == "Debian"
+
+  - name: Creating empty file into /etc/consul.d
+    file:
+      path: "/etc/consul.d/consul.hcl"
+      state: touch
+      owner: consul
+      group: consul
+      mode: '0644'
+
+  - name: Changing permissions to /etc/consul.d/ folder
+    file:
+      path: /etc/consul.d/
+      owner: consul
+      group: consul
+
+  - name: Creating the consul data directory
+    ansible.builtin.file:
+      path: /opt/consul
+      state: directory
+      recurse: yes
+      owner: consul
+      group: consul
+    
+  - name: Systemd service
+    copy:
+      src: ../configuration/consul.service
+      dest: /etc/systemd/system/consul.service

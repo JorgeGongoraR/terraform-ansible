@@ -1,0 +1,7 @@
+---
+  - name: Set authorized key took from file
+    authorized_key:
+      user: ubuntu
+      state: present
+      key: "{{ lookup('file', lookup('env','HOME') + '{{ ssh_key_path }}' ) }}"
+

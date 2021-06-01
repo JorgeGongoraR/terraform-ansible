@@ -1,0 +1,3 @@
+ssh_key_path: "/.ssh/id_rsa.pub"
+key_pem_path: "~/Downloads/private-public.pem"
+user: "jorgegongora"
