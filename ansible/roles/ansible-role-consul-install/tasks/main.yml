@@ -17,11 +17,17 @@
       - ufw
     when: ansible_facts['os_family'] == "Debian"
   
-  - name: Downloading consul
-    ansible.builtin.unarchive:
-      src: https://releases.hashicorp.com/consul/1.9.5/consul_1.9.5_linux_amd64.zip
-      dest: /usr/local/bin/
-      remote_src: yes
+  # - name: Downloading consul
+  #   ansible.builtin.unarchive:
+  #     src: https://releases.hashicorp.com/consul/1.9.5/consul_1.9.5_linux_amd64.zip
+  #     dest: /usr/local/bin/
+  #     remote_src: yes
+  - name: Download consul
+    shell: "{{ item }}"
+    loop:
+     - curl --silent --remote-name https://releases.hashicorp.com/consul/1.9.5/consul_1.9.5_linux_amd64.zip
+     - sudo unzip -o -d /usr/local/bin/ consul_1.9.5_linux_amd64.zip
+     - sudo chown root:root /usr/local/bin/consul
 
   - name: Checking consul version
     ansible.builtin.shell: consul --version
