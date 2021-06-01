@@ -1,14 +1,4 @@
 ---
-- name: SSH
-  hosts: all
-  become: yes
-  become_user: root
-  gather_facts: yes
-  tags: [ssh]
-
-  roles:
-    - name: SSH
-      role: ansible-role-consul-ssh
 - name: Install and configure Hashicorp Consul
   hosts: all
   become: yes
@@ -23,6 +13,17 @@
       role: ansible-role-consul-install
     - name: Configure files in all nodes
       role: ansible-role-consul-configure
+
+# - name: Configure all consul hosts
+#   hosts: all
+#   become: yes
+#   become_user: root
+#   gather_facts: yes
+#   tags: [consul]
+
+#   roles:
+#     - name: Configure all consul hosts
+#       role: ansible-role-consul-hosts-conf
 
 - name: Configure consul host1
   hosts: consul1
@@ -39,15 +40,22 @@
       copy:
         src: ../configuration/server.hcl
         dest: /etc/consul.d/server.hcl
-    - name: Join with other nodes
-      ansible.builtin.shell:
-        cmd: systemctl daemon-reload
-    - name: Restart Consul service
-      ansible.builtin.shell:
-        cmd: systemctl restart consul.service
-    - name: Start Consul service
-      ansible.builtin.shell:
-        cmd: systemctl enable consul.service
+    # - name: Join with other nodes
+    #   ansible.builtin.shell:
+    #     cmd: sudo systemctl daemon-reload
+    - name: Just force systemd to reread configs
+      ansible.builtin.systemd:
+        daemon_reload: yes
+ 
+    - name: Make sure a service consul is enabled
+      ansible.builtin.systemd:
+        name: consul
+        enabled: yes
+
+    - name: Make sure a service consul is running
+      ansible.builtin.systemd:
+        state: started
+        name: consul
 
 - name: Configure consul host2
   hosts: consul2
@@ -67,13 +75,9 @@
     - name: Join with other nodes
       ansible.builtin.shell:
         cmd: systemctl daemon-reload
-    - name: Restart Consul service
+    - name: Enable Consul service
       ansible.builtin.shell:
-        cmd: systemctl restart consul.service
-    - name: Start Consul service
-      systemd:
-        name: consul.service
-        state: started
+        cmd: systemctl enable consul.service
 
 - name: Configure consul host3
   hosts: consul3
@@ -93,13 +97,9 @@
     - name: Join with other nodes
       ansible.builtin.shell:
         cmd: systemctl daemon-reload
-    - name: Restart Consul service
+    - name: Enable Consul service
       ansible.builtin.shell:
-        cmd: systemctl restart consul.service
-    - name: Start Consul service
-      systemd:
-        name: consul.service
-        state: started
+        cmd: systemctl enable consul.service
 
 - name: Configure consul host4
   hosts: consul4
@@ -115,13 +115,9 @@
     - name: Join with other nodes
       ansible.builtin.shell:
         cmd: systemctl daemon-reload
-    - name: Restart Consul service
+    - name: Enable Consul service
       ansible.builtin.shell:
-        cmd: systemctl restart consul.service
-    - name: Start Consul service
-      systemd:
-        name: consul.service
-        state: started
+        cmd: systemctl enable consul.service
 
 - name: TLS
   hosts: consul1
