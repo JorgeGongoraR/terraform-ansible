@@ -31,7 +31,3 @@
 
   - name: Checking consul version
     ansible.builtin.shell: consul --version
-
-  - name: Restart Consul service
-    ansible.builtin.shell:
-      cmd: systemctl restart consul.service
