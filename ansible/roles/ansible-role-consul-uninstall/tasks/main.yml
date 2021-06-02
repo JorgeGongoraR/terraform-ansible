@@ -20,7 +20,7 @@
       - "{{ service_path }}"
       - "{{ consul_integrated_path }}"
 
-  - name: Delete zip
+  - name: Delete consul zip
     file:
       state: absent
       path: "~/*.zip"
