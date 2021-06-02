@@ -43,7 +43,13 @@
       recurse: yes
       owner: consul
       group: consul
-    
+  
+  - name: Open port 8301
+    community.general.ufw:
+      rule: allow
+      port: '8301'
+      proto: tcp
+
   - name: Systemd service
     copy:
       src: ../configuration/consul.service
